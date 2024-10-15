@@ -10,14 +10,13 @@
         </div>
         <div class="row">
             <div class="col">
-
                 <fieldset disabled>
                     <div class="row disabled">
                         <div class="col col-8">
-                            Название: <input type="text" value="{{ snipped.name }}" class="form-control">
+                            Название: <input type="text" value="{{ snippet.name }}" class="form-control">
                         </div>
                         <div class="col col-4">
-                            Дата создания:<input type="text" value="{{ snipped.creation_date }}" class="form-control">
+                            Дата создания:<input type="text" value="{{ snippet.creation_date }}" class="form-control">
                         </div>
                     </div>
                     <hr>
@@ -25,16 +24,13 @@
                         <div class="col">
                             <div class="p-2 h-100" style="border:1px solid #ced4da; border-radius:5px;">
                                 <p>
-                                    {{ snipped.code }}
+                                    {{ snippet.code }}
                                 </p>
-                 
                             </div>
-                 
                         </div>
                     </div>
                  </fieldset>
-            
             </div>
         </div>
     </div>
-{% {% endblock %} %}
+{% endblock %}
