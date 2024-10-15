@@ -2,6 +2,7 @@ from django.http import Http404
 from django.shortcuts import render, redirect
 from MainApp.models import Snippet
 from django.core.exceptions import ObjectDoesNotExist
+from MainApp.forms import SnippetForm 
 
 
 def index_page(request):
@@ -10,9 +11,19 @@ def index_page(request):
 
 
 def add_snippet_page(request):
-    context = {'pagename': 'Добавление нового сниппета'}
-    return render(request, 'pages/add_snippet.html', context)
-
+    if request.method == 'GET':
+        form = SnippetForm()
+        context = {
+            'pagename': 'Добавление нового списка',
+            'form': form,
+            }
+        return render(request, 'pages/add_snippet.html', context)
+    if request.method == 'POST':
+        form = SnippetForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("snippets-list")
+        return render(request,'pages/add_snippet.html', {'form': form})
 
 def snippets_page(request):
     snippets = Snippet.objects.all()
@@ -32,3 +43,14 @@ def snippet_detail(request, snippet_id):
     else:
         context['snippet'] = snippet
         return render(request, 'pages/snippet_detail.html', context)
+    
+
+def snippet_delete(request, snippet_id):
+    if request.method == 'GET' or request.method == 'POST':
+        snippet = Snippet.objects.get(id=snippet_id)
+        snippet.delete()
+        return redirect('snippets-list')
+
+
+def snippet_edit(request, snippet_id):  
+    pass 

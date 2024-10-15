@@ -28,6 +28,7 @@
                         <th scope="col">Название</th>
                         <th scope="col">Язык</th>
                         <th scope="col">Дата создания</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -37,6 +38,7 @@
                         <td><a href="{% url "snippet-detail" snippet.id %}">{{ snippet.name }}</a></td>
                         <td scope="row">{{ snippet.lang }}</td>
                         <td>{{ snippet.creation_date | date:"d F Y H:i:s" }}</td>
+                        <td><a class="btn btn-outline-secondary" href="{% url "snippet-delete" snippet.id %}">Удалить сниппет</a></td>
                     </tr>
                     {% empty %}
                         <tr>
