@@ -15,7 +15,9 @@ class SnippetForm(ModelForm):
                        'placeholder': 'Название сниппета'}),
             'code': Textarea(
                 attrs={'placeholder': 'Код сниппета',
-                       })
+                       'rows': 5,
+                       'class': 'input-large',
+                       'style': 'width: 50% !important; resize: vertical !important;'})
         }
 
 
@@ -23,4 +25,4 @@ class SnippetForm(ModelForm):
         snippet_name = self.cleaned_data.get('name')
         if snippet_name is not None and len(snippet_name) > 3:
             return snippet_name
-        raise ValidationError('Snippet is too short!')
+        raise ValidationError('Snippet name is too short!')
