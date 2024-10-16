@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from MainApp.models import Snippet
 from django.core.exceptions import ObjectDoesNotExist
 from MainApp.forms import SnippetForm 
+from django.contrib import auth
 
 
 def index_page(request):
@@ -21,7 +22,10 @@ def add_snippet_page(request):
     if request.method == 'POST':
         form = SnippetForm(request.POST)
         if form.is_valid():
-            form.save()
+            snippet = form.save(commit=False)
+            if request.user.is_authenticated:
+                snippet.user = request.user
+                snippet.save()
             return redirect("snippets-list")
         return render(request,'pages/add_snippet.html', {'form': form})
 
@@ -57,3 +61,24 @@ def snippet_edit(request, snippet_id):
     snippet = get_object_or_404(Snippet, id=snippet_id)
     context['snippet'] = snippet
     return render(request, 'pages/edit_snippet.html', context)
+
+
+def login(request):
+    if request.method == 'POST':
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = auth.authenticate(request, username=username, password=password)
+        if user is not None:
+            auth.login(request, user)
+        else:
+            context = {
+                'pagename': 'PythonBin',
+                'errors': ['wrong username or password'],
+            }
+            return render(request, "pages/index.html", context)
+    return redirect('home')
+
+
+def logout(request):
+    auth.logout(request)
+    return redirect('home')
