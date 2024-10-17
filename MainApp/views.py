@@ -2,7 +2,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from MainApp.models import Snippet
 from django.core.exceptions import ObjectDoesNotExist
-from MainApp.forms import SnippetForm 
+from MainApp.forms import SnippetForm, UserRegistrationForm 
 from django.contrib import auth
 
 
@@ -15,7 +15,7 @@ def add_snippet_page(request):
     if request.method == 'GET':
         form = SnippetForm()
         context = {
-            'pagename': 'Добавление нового списка',
+            'pagename': 'Добавление нового сниппета',
             'form': form,
             }
         return render(request, 'pages/add_snippet.html', context)
@@ -100,3 +100,17 @@ def login(request):
 def logout(request):
     auth.logout(request)
     return redirect('home')
+
+
+def create_user(request):
+    context = {'pagename': 'Регистрация нового пользователя'}
+    if request.method == 'GET':
+        form = UserRegistrationForm()
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    context['form'] = form
+    return render(request, "pages/registration.html", context)
+    
