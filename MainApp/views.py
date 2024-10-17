@@ -29,12 +29,23 @@ def add_snippet_page(request):
             return redirect("snippets-list")
         return render(request,'pages/add_snippet.html', {'form': form})
 
+
 def snippets_page(request):
-    snippets = Snippet.objects.all()
+    snippets = Snippet.objects.filter(public=True)
     context = {
-        'pagename': 'Просмотр сниппетов',
-        'snippets': snippets,
-        }
+            'pagename': 'Просмотр сниппетов',
+            'snippets': snippets,
+            }
+    return render(request, 'pages/view_snippets.html', context)
+
+
+def snippets_page_user(request):
+    current_user = request.user.username
+    snippets = Snippet.objects.filter(user__username=current_user)
+    context = {
+    'pagename': 'Просмотр моих сниппетов',
+    'snippets': snippets,
+    }
     return render(request, 'pages/view_snippets.html', context)
 
 
@@ -59,8 +70,15 @@ def snippet_delete(request, snippet_id):
 def snippet_edit(request, snippet_id): 
     context = {'pagename': 'Редктирование сниппета'}
     snippet = get_object_or_404(Snippet, id=snippet_id)
-    context['snippet'] = snippet
-    return render(request, 'pages/edit_snippet.html', context)
+    if request.method == 'GET':
+        form = SnippetForm(instance=snippet)
+        return render(request,'pages/add_snippet.html', context | {'form': form})
+    if request.method == 'POST':
+        data_form = request.POST
+        snippet.name = data_form['name']
+        snippet.code = data_form['code']
+        snippet.save()
+        return redirect('snippets-list')
 
 
 def login(request):

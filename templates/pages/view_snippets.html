@@ -28,7 +28,7 @@
                         <th scope="col">Название</th>
                         <th scope="col">Язык</th>
                         <th scope="col">Дата создания</th>
-                        <th scope="col">Действия</th>
+                        <th scope="col">Приватность</th>
                         <th scope="col">Действия</th>
                         <th scope="col">Пользователь</th>
                     </tr>
@@ -39,7 +39,7 @@
                         <td scope="row">{{ snippet.id }}</td>
                         <td><a href="{% url "snippet-detail" snippet.id %}">{{ snippet.name }}</a>
                             <a href="{% url "snippet-edit" snippet.id %}">
-                                <i style="color: blue;" class="fa-solid fa-edit"></i>
+                                <i style="color: blue;" class="fa fa-edit"></i>
                             </a>
                             <a href="{% url "snippet-delete" snippet.id %}">
                                 <i style="color: red;" class="fa-solid fa-trash"></i>
@@ -47,13 +47,27 @@
                         </td>
                         <td scope="row">{{ snippet.lang }}</td>
                         <td>{{ snippet.creation_date | date:"d F Y H:i:s" }}</td>
-                        <td><a href="{% url "snippet-edit" snippet.id %}" class="btn btn-primary">Редактировать</a></td>
-                        <td>
-                            <form action="{% url "snippet-delete" snippet.id  %}" method="POST">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-danger">Удалить</button>
-                            </form>
-                        </td>
+                        {% if snippet.public == True %}
+                            <td scope="row">Public</td>
+                        {% else %}
+                            <td scope="row">Private</td>
+                        {% endif %}
+                        {% if snippet.user.username == request.user.username %}
+                            <td>
+                                <div style="display: flex; flex-direction: row;">
+                                    <a href="{% url "snippet-edit" snippet.id %}" class="btn btn-primary">Редактировать</a>
+                                    &nbsp;&nbsp;
+                                    <form action="{% url "snippet-delete" snippet.id  %}" method="POST">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger">Удалить</button>
+                                    </form>
+                                </div>
+                            </td>
+                        {% else %}
+                            <td>
+                                <button class="btn btn-outline-light">Изменения вам не доступны</button>
+                            </td>   
+                        {% endif %}
                         <td>{{ snippet.user.username }}</td>
                     </tr>
                     {% empty %}

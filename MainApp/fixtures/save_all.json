@@ -6,7 +6,9 @@
         "name": "Hello world Snippet",
         "lang": "py",
         "code": "print(\"Hello world\")",
-        "creation_date": "2024-10-14T17:36:38.880Z"
+        "creation_date": "2024-10-14T17:36:38.880Z",
+        "user": null,
+        "public": true
     }
 },
 {
@@ -16,7 +18,69 @@
         "name": "Second Snippet",
         "lang": "py",
         "code": "print(\"Hello students\")",
-        "creation_date": "2024-10-14T17:57:25.067Z"
+        "creation_date": "2024-10-14T17:57:25.067Z",
+        "user": null,
+        "public": true
+    }
+},
+{
+    "model": "MainApp.snippet",
+    "pk": 3,
+    "fields": {
+        "name": "Cpp snippet",
+        "lang": "cpp",
+        "code": "cout <<",
+        "creation_date": "2024-10-16T06:30:32.560Z",
+        "user": null,
+        "public": true
+    }
+},
+{
+    "model": "MainApp.snippet",
+    "pk": 6,
+    "fields": {
+        "name": "Firs Admin snippet",
+        "lang": "py",
+        "code": "print('Admin snippet')",
+        "creation_date": "2024-10-17T06:16:38.894Z",
+        "user": 1,
+        "public": true
+    }
+},
+{
+    "model": "MainApp.snippet",
+    "pk": 7,
+    "fields": {
+        "name": "FirstPrivate",
+        "lang": "php",
+        "code": "Private snippet",
+        "creation_date": "2024-10-17T09:44:50.239Z",
+        "user": 1,
+        "public": false
+    }
+},
+{
+    "model": "MainApp.snippet",
+    "pk": 8,
+    "fields": {
+        "name": "User snippet 1",
+        "lang": "py",
+        "code": "First",
+        "creation_date": "2024-10-17T09:55:06.632Z",
+        "user": 2,
+        "public": true
+    }
+},
+{
+    "model": "MainApp.snippet",
+    "pk": 9,
+    "fields": {
+        "name": "User snippet 2",
+        "lang": "js",
+        "code": "Second",
+        "creation_date": "2024-10-17T09:55:29.468Z",
+        "user": 2,
+        "public": false
     }
 }
 ]
