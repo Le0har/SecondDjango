@@ -22,6 +22,9 @@ class Snippet(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, blank=True, null=True)
     public = models.BooleanField(default=True, choices=BOOLS)
 
+    def __str__(self):
+        return f'{self.name}'
+
 
 class Comment(models.Model):
     text = models.TextField(max_length=1000)
