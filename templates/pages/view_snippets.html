@@ -38,12 +38,14 @@
                     <tr>
                         <td scope="row">{{ snippet.id }}</td>
                         <td><a href="{% url "snippet-detail" snippet.id %}">{{ snippet.name }}</a>
-                            <a href="{% url "snippet-edit" snippet.id %}">
-                                <i style="color: blue;" class="fa fa-edit"></i>
-                            </a>
-                            <a href="{% url "snippet-delete" snippet.id %}">
-                                <i style="color: red;" class="fa-solid fa-trash"></i>
-                            </a>
+                            {% if snippet.user == request.user %}
+                                <a href="{% url "snippet-edit" snippet.id %}">
+                                    <i style="color: blue;" class="fa fa-edit"></i>
+                                </a>
+                                <a href="{% url "snippet-delete" snippet.id %}">
+                                    <i style="color: red;" class="fa-solid fa-trash"></i>
+                                </a>
+                            {% endif %}
                         </td>
                         <td scope="row">{{ snippet.lang }}</td>
                         <td>{{ snippet.creation_date | date:"d F Y H:i:s" }}</td>
@@ -52,12 +54,12 @@
                         {% else %}
                             <td scope="row">Private</td>
                         {% endif %}
-                        {% if snippet.user.username == request.user.username %}
+                        {% if snippet.user == request.user %}
                             <td>
                                 <div style="display: flex; flex-direction: row;">
                                     <a href="{% url "snippet-edit" snippet.id %}" class="btn btn-primary">Редактировать</a>
                                     &nbsp;&nbsp;
-                                    <form action="{% url "snippet-delete" snippet.id  %}" method="POST">
+                                    <form action="{% url "snippet-delete" snippet.id %}" method="POST">
                                         {% csrf_token %}
                                         <button type="submit" class="btn btn-danger">Удалить</button>
                                     </form>

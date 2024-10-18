@@ -29,8 +29,14 @@
                             </div>
                         </div>
                     </div>
-                 </fieldset>
+                </fieldset>
             </div>
         </div>
+        <br>
+        <form action="{% url "comment-add" %}" method="POST">
+            {% csrf_token %}
+            {{ comment_form }}
+            <button type="submit" class="btn btn-secondary">Добавить комментарий</button>  
+        </form>
     </div>
-{% endblock %}
+ {% endblock %}

@@ -2,7 +2,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from MainApp.models import Snippet
 from django.core.exceptions import ObjectDoesNotExist
-from MainApp.forms import SnippetForm, UserRegistrationForm 
+from MainApp.forms import CommentForm, SnippetForm, UserRegistrationForm 
 from django.contrib import auth
 
 
@@ -40,7 +40,7 @@ def snippets_page(request):
 
 
 def snippets_page_user(request):
-    current_user = request.user.username
+    current_user = request.user
     snippets = Snippet.objects.filter(user__username=current_user)
     context = {
     'pagename': 'Просмотр моих сниппетов',
@@ -50,6 +50,7 @@ def snippets_page_user(request):
 
 
 def snippet_detail(request, snippet_id):
+    comment_form = CommentForm()
     context = {'pagename': 'Просмотр сниппета'}
     try:
         snippet = Snippet.objects.get(id=snippet_id)
@@ -57,6 +58,7 @@ def snippet_detail(request, snippet_id):
         return render(request, "pages/errors.html", context | {"error": f'Snippet with id={snippet_id} not found'})
     else:
         context['snippet'] = snippet
+        context['comment_form'] = comment_form
         return render(request, 'pages/snippet_detail.html', context)
     
 
@@ -68,7 +70,7 @@ def snippet_delete(request, snippet_id):
 
 
 def snippet_edit(request, snippet_id): 
-    context = {'pagename': 'Редктирование сниппета'}
+    context = {'pagename': 'Редактирование сниппета'}
     snippet = get_object_or_404(Snippet, id=snippet_id)
     if request.method == 'GET':
         form = SnippetForm(instance=snippet)
@@ -113,4 +115,19 @@ def create_user(request):
             return redirect('home')
     context['form'] = form
     return render(request, "pages/registration.html", context)
+
+
+def comment_add(request):
+    if request.method == "POST":
+        comment_form = CommentForm(request.POST)
+        print(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.author = request.POST.get("username")
+            comment.snippet = Snippet.objects.prefetch_related('comments').get(id=1)
+            comment.save()
+            return redirect(f'/snippets/1')
+        raise Http404
+
+
     
