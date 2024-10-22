@@ -33,10 +33,28 @@
             </div>
         </div>
         <br>
-        <form action="{% url "comment-add" %}" method="POST">
-            {% csrf_token %}
-            {{ comment_form }}
-            <button type="submit" class="btn btn-secondary">Добавить комментарий</button>  
-        </form>
+        <table border="1">
+            <tr>
+                <th> Автор </th>
+                <th> Комментарий </th>
+                <th> Дата создания </th>
+            </tr>
+            {% for comment in snippet.comments.all %}
+                <tr>
+                    <td>{{ comment.author.username }}</td>
+                    <td>{{ comment.text }}</td>
+                    <td>{{ comment.creation_date }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <br>
+        {% if request.user.is_authenticated %}
+            <form action="{% url "comment-add" %}" method="POST">
+                {% csrf_token %}
+                {{ comment_form }}
+                <input type="hidden" name="snippet_id" value="{{ snippet.id }}">     
+                <button type="submit" class="btn btn-secondary">Добавить комментарий</button>  
+            </form>
+        {% endif %}
     </div>
  {% endblock %}

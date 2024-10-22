@@ -50,13 +50,13 @@ def snippets_page_user(request):
 
 
 def snippet_detail(request, snippet_id):
-    comment_form = CommentForm()
     context = {'pagename': 'Просмотр сниппета'}
     try:
         snippet = Snippet.objects.get(id=snippet_id)
     except ObjectDoesNotExist:
         return render(request, "pages/errors.html", context | {"error": f'Snippet with id={snippet_id} not found'})
     else:
+        comment_form = CommentForm()
         context['snippet'] = snippet
         context['comment_form'] = comment_form
         return render(request, 'pages/snippet_detail.html', context)
@@ -120,13 +120,15 @@ def create_user(request):
 def comment_add(request):
     if request.method == "POST":
         comment_form = CommentForm(request.POST)
-        print(request.POST)
         if comment_form.is_valid():
+            snippet_id = request.POST.get("snippet_id")
+            print(snippet_id)
+            snippet = Snippet.objects.get(id=snippet_id)
             comment = comment_form.save(commit=False)
-            comment.author = request.POST.get("username")
-            comment.snippet = Snippet.objects.prefetch_related('comments').get(id=1)
+            comment.author = request.user
+            comment.snippet = snippet
             comment.save()
-            return redirect(f'/snippets/1')
+            return redirect('snippet-detail', snippet_id=snippet.id)
         raise Http404
 
 
