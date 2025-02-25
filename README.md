@@ -1,28 +1,60 @@
-# Snippets
+# SecondDjango
 
-## Инструкция по развертыванию проекта
-1. `python3 -m venv django_venv`
+Учебное веб-приложение в УЦ "Специалист" на Django для отображения сниппетов.
 
-2. `source django_venv/bin/activate`
+## Возможности SecondDjango
 
-3. `pip install -r requirements.txt`
+- Добавление сниппета
+- Отображение всех сниппетов
+- Изменение сниппета
+- Удаление сниппета
+- Поиск сниппета
+- Регистрация новых пользователей и авторизация
+- Разграничение прав доступа к изменению сниппета
 
-4. `python manage.py migrate`
+## Технологии
 
-5. `python manage.py runserver`
+- python 3.10+ - высокоуровневый язык программирования общего назначения
+- django 5.1.1 - фреймворк для веб-приложений на языке Python
 
+## Установка на локальной машине
 
-## Запуск `ipython` в контексте `django` приложений
+1. Клонировать репозиторий c GitHub
 ```
-python manage.py shell_plus --ipython
+$ git clone https://github.com/Le0har/SecondDjango
+```
+2. Создать виртуальное окружение
+```
+$ python3 -m venv django_venv
+```
+3. Запустить виртуальное окружение
+```
+$ source django_venv/bin/activate
+```
+4. Обновить менеджер пакетов pip
+```
+$ python -m pip install --upgrade pip
+```
+5. Установить зависимости из ```requirements.txt```
+```
+$ pip install -r requirements.txt
 ```
 
-## Выгрузка и загрузка данных при работе с БД
-### Выгрузить данные из БД
+6. Выполнить миграции
 ```
-python manage.py dumpdata MainApp --indent 4 > ./fixtures/save_all.json
+$ python manage.py migrate
 ```
-### Загрузить данные в БД
+
+7. Записать данные в БД (опционально)
 ```
-python manage.py loaddata ./fixtures/save_all.json
+$ python manage.py loaddata MainApp/fixtures/save_all.json
 ```
+
+8. Запустить проект
+```
+$ python manage.py runserver
+```
+
+## Автор
+
+Тихонов Алексей [https://github.com/Le0har](https://github.com/Le0har)
